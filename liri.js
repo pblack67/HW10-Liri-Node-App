@@ -62,7 +62,7 @@ function spotifyThisSong(songName) {
 
 function getMovieDetails(movie) {
     const params = {
-        apiKey: 'trilogy',
+        apiKey: keys.omdb.id,
         title: movie.Title,
         year: parseInt(movie.Year)
     }
@@ -85,7 +85,7 @@ function getMovieDetails(movie) {
 
 function movieThis(movieName) {
     const params = {
-        apiKey: "trilogy",
+        apiKey: keys.omdb.id,
         query: movieName,
         type: "movie"
     }
