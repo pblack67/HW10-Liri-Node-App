@@ -107,7 +107,7 @@ function movieThis(movieName) {
 }
 
 function theCowSays(caption) {
-    console.log(cowsay.say(
+    log(cowsay.say(
         {
             text: caption,
             e: "oO",
