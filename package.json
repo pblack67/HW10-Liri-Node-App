@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/pblack67/HW8-Liri-Node-App#readme",
   "dependencies": {
-    "dotenv": "^8.0.0"
+    "axios": "^0.18.0",
+    "dotenv": "^8.0.0",
+    "moment": "^2.24.0"
   }
 }
