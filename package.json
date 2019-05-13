@@ -1,0 +1,20 @@
+{
+  "name": "HW8-Liri-Node-App",
+  "version": "1.0.0",
+  "description": "A node application that takes various kinds of input and outputs information about bands, movies, and music",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pblack67/HW8-Liri-Node-App.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pblack67/HW8-Liri-Node-App/issues"
+  },
+  "homepage": "https://github.com/pblack67/HW8-Liri-Node-App#readme"
+}
