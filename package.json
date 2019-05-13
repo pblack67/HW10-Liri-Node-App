@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/pblack67/HW8-Liri-Node-App/issues"
   },
-  "homepage": "https://github.com/pblack67/HW8-Liri-Node-App#readme"
+  "homepage": "https://github.com/pblack67/HW8-Liri-Node-App#readme",
+  "dependencies": {
+    "dotenv": "^8.0.0"
+  }
 }
