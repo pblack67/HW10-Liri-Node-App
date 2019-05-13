@@ -4,6 +4,7 @@ const axios = require("axios");
 const moment = require("moment");
 const Spotify = require("node-spotify-api");
 const spotify = new Spotify(keys.spotify);
+const omdb = require("omdb-client");
 
 console.log(process.argv);
 
@@ -37,7 +38,6 @@ function getArtistString(artistArray) {
 }
 
 function spotifyThisSong(songName) {
-    console.log(`spotifyThisSong ${songName}`);
     spotify.search({ type: 'track', query: songName }, (err, data) => {
         if (err) {
             return console.log('Error occurred: ' + err);
@@ -46,6 +46,52 @@ function spotifyThisSong(songName) {
         data.tracks.items.forEach(item => {
             const artistString = getArtistString(item.album.artists);
             console.log(`${artistString}: ${item.album.name} (${item.preview_url})`);
+        });
+    });
+}
+
+function getMovieDetails(movie) {
+    const params = {
+        apiKey: 'trilogy',
+        title: movie.Title,
+        year: parseInt(movie.Year)
+    }
+    omdb.get(params, (err, movieDetails) => {
+        if (err) {
+            return console.error(err);
+        }
+
+        console.log(`${movieDetails.Title} (${movieDetails.Year})`);
+        console.log(`Country: ${movieDetails.Country}`);
+        console.log(`Language: ${movieDetails.Language}`);
+        movieDetails.Ratings.forEach(rating => {
+            console.log(`${rating.Source} (${rating.Value})`)
+        });
+        console.log(`Cast: ${movieDetails.Actors}`);
+        console.log(`Plot: ${movieDetails.Plot}`);
+        console.log("==================================")
+
+    })
+}
+
+function movieThis(movieName) {
+    const params = {
+        apiKey: "trilogy",
+        query: movieName,
+        type: "movie"
+    }
+
+    omdb.search(params, (err, movies) => {
+        if (err) {
+            return console.error(err);
+        }
+
+        if (movies.Search.length < 1) {
+            return console.log('No movies were found!');
+        }
+
+        movies.Search.forEach(movie => {
+            getMovieDetails(movie);
         });
     });
 }
@@ -70,7 +116,12 @@ switch (process.argv[2]) {
         break;
 
     case "movie-this":
-        console.log("movie-this");
+        let movieName = process.argv[3];
+        if (movieName !== undefined) {
+            movieThis(movieName);
+        } else {
+            movieThis("Mr. Nobody");
+        }
         break;
 
     case "do-what-it-says":
