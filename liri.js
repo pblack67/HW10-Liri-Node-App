@@ -7,23 +7,32 @@ const spotify = new Spotify(keys.spotify);
 const omdb = require("omdb-client");
 const fs = require("fs");
 
-console.log(process.argv);
+const separator = "==================================";
+
+function log(data) {
+    console.log(data);
+    fs.appendFile("./log.txt", data + "\n", (err) => {
+        if (err) {
+            console.log("File write error!");
+        }
+    });
+}
 
 function bandsInTown(bandName) {
     let bandsInTownAPI = `https://rest.bandsintown.com/artists/${bandName}/events?app_id=${keys.bandsInTown.id}`;
     axios.get(bandsInTownAPI)
         .then(response => {
             if (typeof response.data !== "string") {
-                console.log(`${bandName} concerts:`);
+                log(`${bandName} concerts:`);
                 response.data.forEach(element => {
-                    console.log(`${moment(element.datetime).format("MM/DD/YYYY")}: ${element.venue.name}, ${element.venue.city}, ${element.venue.region}`);
+                    log(`${moment(element.datetime).format("MM/DD/YYYY")}: ${element.venue.name}, ${element.venue.city}, ${element.venue.region}`);
                 });
             } else {
-                console.log(`${bandName} not found`);
+                log(`${bandName} not found`);
             }
         })
         .catch(error => {
-            console.log(error);
+            log(error);
         });
 }
 
@@ -41,12 +50,12 @@ function getArtistString(artistArray) {
 function spotifyThisSong(songName) {
     spotify.search({ type: 'track', query: songName }, (err, data) => {
         if (err) {
-            return console.log('Error occurred: ' + err);
+            return log('Error occurred: ' + err);
         }
 
         data.tracks.items.forEach(item => {
             const artistString = getArtistString(item.album.artists);
-            console.log(`${artistString}: ${item.album.name} (${item.preview_url})`);
+            log(`${artistString}: ${item.album.name} (${item.preview_url})`);
         });
     });
 }
@@ -62,16 +71,15 @@ function getMovieDetails(movie) {
             return console.error(err);
         }
 
-        console.log(`${movieDetails.Title} (${movieDetails.Year})`);
-        console.log(`Country: ${movieDetails.Country}`);
-        console.log(`Language: ${movieDetails.Language}`);
+        log(`${movieDetails.Title} (${movieDetails.Year})`);
+        log(`Country: ${movieDetails.Country}`);
+        log(`Language: ${movieDetails.Language}`);
         movieDetails.Ratings.forEach(rating => {
-            console.log(`${rating.Source} (${rating.Value})`)
+            log(`${rating.Source} (${rating.Value})`)
         });
-        console.log(`Cast: ${movieDetails.Actors}`);
-        console.log(`Plot: ${movieDetails.Plot}`);
-        console.log("==================================")
-
+        log(`Cast: ${movieDetails.Actors}`);
+        log(`Plot: ${movieDetails.Plot}`);
+        log(separator);
     })
 }
 
@@ -88,7 +96,7 @@ function movieThis(movieName) {
         }
 
         if (movies.Search.length < 1) {
-            return console.log('No movies were found!');
+            return log('No movies were found!');
         }
 
         movies.Search.forEach(movie => {
@@ -98,15 +106,19 @@ function movieThis(movieName) {
 }
 
 function executeCommand(command, argument) {
+    log(separator);
+    log(`Command: ${command} ${argument}`);
+    log(separator);
+
     switch (command) {
         case "concert-this":
             if (argument != undefined) {
                 bandsInTown(argument);
             } else {
-                console.log("Please enter a band/artist name");
+                log("Please enter a band/artist name");
             }
             break;
-    
+
         case "spotify-this-song":
             if (argument !== undefined) {
                 spotifyThisSong(argument);
@@ -114,7 +126,7 @@ function executeCommand(command, argument) {
                 spotifyThisSong("The Sign");
             }
             break;
-    
+
         case "movie-this":
             if (argument !== undefined) {
                 movieThis(argument);
@@ -122,13 +134,13 @@ function executeCommand(command, argument) {
                 movieThis("Mr. Nobody");
             }
             break;
-    
+
         case "do-what-it-says":
             doWhatItSays();
             break;
-    
+
         default:
-            console.log("Please enter one of the following commands: concert-this, spotify-this-song, movie-this, do-what-it-says");
+            log("Please enter one of the following commands: concert-this, spotify-this-song, movie-this, do-what-it-says");
             break;
     }
 }
@@ -136,12 +148,10 @@ function executeCommand(command, argument) {
 function doWhatItSays() {
     fs.readFile('./random.txt', 'utf8', (err, data) => {
         if (err) {
-            return console.log("File Read Error!");
+            return log("File Read Error!");
         }
 
-        console.log(data);
         let command = data.split(",");
-        console.log(command);
         executeCommand(command[0].trim(), command[1].trim());
     });
 }
