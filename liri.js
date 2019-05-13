@@ -2,6 +2,8 @@ require("dotenv").config();
 const keys = require("./keys.js");
 const axios = require("axios");
 const moment = require("moment");
+const Spotify = require("node-spotify-api");
+const spotify = new Spotify(keys.spotify);
 
 console.log(process.argv);
 
@@ -23,6 +25,31 @@ function bandsInTown(bandName) {
         });
 }
 
+function getArtistString(artistArray) {
+    let artistString = "";
+    artistArray.forEach(artist => {
+        if (artistString !== "") {
+            artistString += ", ";
+        }
+        artistString += artist.name;
+    });
+    return artistString;
+}
+
+function spotifyThisSong(songName) {
+    console.log(`spotifyThisSong ${songName}`);
+    spotify.search({ type: 'track', query: songName }, (err, data) => {
+        if (err) {
+            return console.log('Error occurred: ' + err);
+        }
+
+        data.tracks.items.forEach(item => {
+            const artistString = getArtistString(item.album.artists);
+            console.log(`${artistString}: ${item.album.name} (${item.preview_url})`);
+        });
+    });
+}
+
 switch (process.argv[2]) {
     case "concert-this":
         let bandName = process.argv[3];
@@ -34,7 +61,12 @@ switch (process.argv[2]) {
         break;
 
     case "spotify-this-song":
-        console.log("spotify-this-song");
+        let songName = process.argv[3];
+        if (songName !== undefined) {
+            spotifyThisSong(songName);
+        } else {
+            spotifyThisSong("The Sign");
+        }
         break;
 
     case "movie-this":
