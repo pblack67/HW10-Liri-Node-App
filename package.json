@@ -19,6 +19,7 @@
   "homepage": "https://github.com/pblack67/HW8-Liri-Node-App#readme",
   "dependencies": {
     "axios": "^0.18.0",
+    "cowsay": "^1.4.0",
     "dotenv": "^8.0.0",
     "moment": "^2.24.0",
     "node-spotify-api": "^1.1.1",

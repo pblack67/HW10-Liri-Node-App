@@ -6,6 +6,7 @@ const Spotify = require("node-spotify-api");
 const spotify = new Spotify(keys.spotify);
 const omdb = require("omdb-client");
 const fs = require("fs");
+var cowsay = require("cowsay");
 
 const separator = "==================================";
 
@@ -105,6 +106,16 @@ function movieThis(movieName) {
     });
 }
 
+function theCowSays(caption) {
+    console.log(cowsay.say(
+        {
+            text: caption,
+            e: "oO",
+            T: "U "
+        }
+    ));
+}
+
 function executeCommand(command, argument) {
     log(separator);
     log(`Command: ${command} ${argument}`);
@@ -137,6 +148,10 @@ function executeCommand(command, argument) {
 
         case "do-what-it-says":
             doWhatItSays();
+            break;
+
+        case "cowsay":
+            theCowSays(argument);
             break;
 
         default:
