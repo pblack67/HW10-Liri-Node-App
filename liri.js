@@ -5,6 +5,7 @@ const moment = require("moment");
 const Spotify = require("node-spotify-api");
 const spotify = new Spotify(keys.spotify);
 const omdb = require("omdb-client");
+const fs = require("fs");
 
 console.log(process.argv);
 
@@ -96,40 +97,53 @@ function movieThis(movieName) {
     });
 }
 
-switch (process.argv[2]) {
-    case "concert-this":
-        let bandName = process.argv[3];
-        if (bandName != undefined) {
-            bandsInTown(bandName);
-        } else {
-            console.log("Please enter a band/artist name");
-        }
-        break;
-
-    case "spotify-this-song":
-        let songName = process.argv[3];
-        if (songName !== undefined) {
-            spotifyThisSong(songName);
-        } else {
-            spotifyThisSong("The Sign");
-        }
-        break;
-
-    case "movie-this":
-        let movieName = process.argv[3];
-        if (movieName !== undefined) {
-            movieThis(movieName);
-        } else {
-            movieThis("Mr. Nobody");
-        }
-        break;
-
-    case "do-what-it-says":
-        console.log("do-what-it-says");
-        break;
-
-    default:
-        console.log("Please enter one of the following commands: concert-this, spotify-this-song, movie-this, do-what-it-says");
-        break;
+function executeCommand(command, argument) {
+    switch (command) {
+        case "concert-this":
+            if (argument != undefined) {
+                bandsInTown(argument);
+            } else {
+                console.log("Please enter a band/artist name");
+            }
+            break;
+    
+        case "spotify-this-song":
+            if (argument !== undefined) {
+                spotifyThisSong(argument);
+            } else {
+                spotifyThisSong("The Sign");
+            }
+            break;
+    
+        case "movie-this":
+            if (argument !== undefined) {
+                movieThis(argument);
+            } else {
+                movieThis("Mr. Nobody");
+            }
+            break;
+    
+        case "do-what-it-says":
+            doWhatItSays();
+            break;
+    
+        default:
+            console.log("Please enter one of the following commands: concert-this, spotify-this-song, movie-this, do-what-it-says");
+            break;
+    }
 }
 
+function doWhatItSays() {
+    fs.readFile('./random.txt', 'utf8', (err, data) => {
+        if (err) {
+            return console.log("File Read Error!");
+        }
+
+        console.log(data);
+        let command = data.split(",");
+        console.log(command);
+        executeCommand(command[0].trim(), command[1].trim());
+    });
+}
+
+executeCommand(process.argv[2].trim(), process.argv[3].trim());
