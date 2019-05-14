@@ -116,22 +116,34 @@ function theCowSays(caption) {
     ));
 }
 
+function usage() {
+    console.log(
+        `Usage:
+node ./liri.js <command> <argument>
+Where command is:
+    concert-this <artist/band>
+    spotify-this-song <songname>
+    movie-this <moviename>
+    do-what-it-says
+    cowsay <cowmessage>
+`);
+}
+
 function executeCommand(command, argument) {
     log(separator);
     log(`Command: ${command} ${argument}`);
     log(separator);
-
     switch (command) {
         case "concert-this":
-            if (argument != undefined) {
+            if (argument) {
                 bandsInTown(argument);
             } else {
-                log("Please enter a band/artist name");
+                bandsInTown("Pentatonix");
             }
             break;
 
         case "spotify-this-song":
-            if (argument !== undefined) {
+            if (argument) {
                 spotifyThisSong(argument);
             } else {
                 spotifyThisSong("The Sign");
@@ -139,7 +151,7 @@ function executeCommand(command, argument) {
             break;
 
         case "movie-this":
-            if (argument !== undefined) {
+            if (argument) {
                 movieThis(argument);
             } else {
                 movieThis("Mr. Nobody");
@@ -151,11 +163,15 @@ function executeCommand(command, argument) {
             break;
 
         case "cowsay":
-            theCowSays(argument);
+            if (argument) {
+                theCowSays(argument);
+            } else {
+                theCowSays("I'm in the mooooooood for looooooove...");
+            }
             break;
 
         default:
-            log("Please enter one of the following commands: concert-this, spotify-this-song, movie-this, do-what-it-says");
+            usage();
             break;
     }
 }
@@ -171,4 +187,8 @@ function doWhatItSays() {
     });
 }
 
-executeCommand(process.argv[2].trim(), process.argv[3].trim());
+if (process.argv[2]) {
+    executeCommand(process.argv[2], process.argv[3]);
+} else {
+    usage();
+}
