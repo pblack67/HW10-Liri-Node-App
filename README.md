@@ -31,9 +31,17 @@ _node ./liri.js movie-this <moviename>_
 
 If no movie name is specified then it will default to _Mr. Nobody_. Liri may respond with more then one movie since many movies may have the same or close to the same title. 
 
+### Commands from a File
+Liri also supports a command issued from a file. The file is random.txt and is easily modofied to run any command mentioned here. To run the command in random.txt use the collowing command line:
+
+_node ./liri.js do-what-it-says_
+
 ### Cowsay
 To have Liri put a message of your choice into a text bubble above a cow uset the following command:
 
 _node ./liri.js cowsay <message>_
 
 If no movie name is specified then it will default to, well you'll just have to rin it and see! Why is this part of the application? Because cows are funny. See [The Far Side](http://www.thefarside.com/) cartoons for more cow-inspired humor. 
+
+## Logging
+All commands and their results are logged in the log.txt file as well as displayed in the console. 
