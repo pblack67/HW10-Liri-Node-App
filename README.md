@@ -1,5 +1,9 @@
 # Liri Node Application
 
+## Video Overview
+
+[LIRI Youtube Video Overview](https://youtu.be/bngkH8kUL2s)
+
 ## Overview
 LIRI stands for _Language Interpretation and Recognition Interface_. Liri is a node.js application that takes various text commands as input and outputs information that corresponds to them. It searches for:
 
@@ -41,7 +45,7 @@ To have Liri put a message of your choice into a text bubble above a cow use the
 
 _node ./liri.js cowsay \<message>_
 
-If no movie name is specified then it will default to, well you'll just have to run it and see! Why is this part of the application? Because cows are funny. See [The Far Side](http://www.thefarside.com/) cartoons for more cow-inspired humor. 
+If no message is specified then it will default to, well, you'll just have to run it and see! Why is this part of the application? Because cows are funny. See [The Far Side](http://www.thefarside.com/) cartoons for more cow-inspired humor. 
 
 ## Logging
 All commands and their results are logged in the log.txt file as well as displayed in the console. 
