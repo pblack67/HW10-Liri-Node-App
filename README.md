@@ -4,6 +4,10 @@
 
 [LIRI Youtube Video Overview](https://youtu.be/bngkH8kUL2s)
 
+![Concert](/images/concert.png)
+![Song](/images/song.png)
+![Movie](/images/movie.png)
+
 ## Overview
 LIRI stands for _Language Interpretation and Recognition Interface_. Liri is a node.js application that takes various text commands as input and outputs information that corresponds to them. It searches for:
 
